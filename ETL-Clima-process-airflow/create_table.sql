@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS datos_clima (
+    id BIGINT IDENTITY(1,1),
+    nombre_ciudad VARCHAR(100) NOT NULL,
+    temperatura FLOAT NOT NULL,
+    humedad FLOAT NOT NULL,
+    velocidad_viento FLOAT NOT NULL,
+    tiempo_medicion TIMESTAMP NOT NULL,
+    fecha_carga TIMESTAMP NOT NULL,
+    clasificacion_clima VARCHAR(50) NOT NULL,
+    indice_comodidad FLOAT NOT NULL,
+    visibilidad VARCHAR(20) NOT NULL,
+    fase_del_dia VARCHAR(10) NOT NULL,
+    presion_atmosferica FLOAT NOT NULL,
+    presion_categoria VARCHAR(20) NOT NULL,
+    indice_uv FLOAT NOT NULL,
+    categoria_uv VARCHAR(20) NOT NULL,
+    latitud FLOAT NOT NULL,
+    longitud FLOAT NOT NULL,
+    zona_horaria VARCHAR(50) NOT NULL,
+    PRIMARY KEY (id)
+);

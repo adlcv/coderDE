@@ -1,0 +1,15 @@
+# Archivos y directorios de Airflow
+logs/
+airflow.db
+airflow.cfg
+webserver_config.py
+
+# Archivos de ambiente
+.env
+
+# Directorios de Python
+__pycache__/
+*.pyc
+
+# Otros
+.DS_Store

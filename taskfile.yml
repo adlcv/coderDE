@@ -1,0 +1,52 @@
+version: "3"
+
+env:
+  ROOT_PROJECT: ./ETL-Clima-process-airflow
+
+tasks:
+  pre_project:
+    cmds:
+      - echo "VERIFICANDO ESTRUCTURA DEL PROYECTO"
+      - |
+        if [ ! -f "$ROOT_PROJECT/dags/credenciales.env" ]; then
+          echo "Error: credenciales.env no encontrado"
+          exit 1
+        fi
+      - |
+        if [ ! -f "$ROOT_PROJECT/dags/ciudades.txt" ]; then
+          echo "Error: ciudades.txt no encontrado"
+          exit 1
+        fi
+      - |
+        if [ ! -f "$ROOT_PROJECT/dags/dag_etl.py" ]; then
+          echo "Error: dag_etl.py no encontrado"
+          exit 1
+        fi
+      - |
+        if [ ! -d "$ROOT_PROJECT/dags/etl_modules" ]; then
+          echo "Error: carpeta etl_modules no encontrada"
+          exit 1
+        fi
+      - mkdir -p $ROOT_PROJECT/{raw_data,processed_data,logs,plugins,config}
+      - |
+        echo "AIRFLOW_UID=$(id -u)" > $ROOT_PROJECT/.env
+        cat $ROOT_PROJECT/dags/credenciales.env >> $ROOT_PROJECT/.env
+      - ls -R $ROOT_PROJECT
+
+  start_project:
+    cmds:
+      - docker compose -f $ROOT_PROJECT/docker-compose.yaml up airflow-init
+      - docker compose -f $ROOT_PROJECT/docker-compose.yaml up -d
+      - docker container ls -a
+
+  down_project:
+    cmds:
+      - docker compose -f $ROOT_PROJECT/docker-compose.yaml down
+
+  list_dags:
+    cmds:
+      - docker compose -f $ROOT_PROJECT/docker-compose.yaml run airflow-cli dags list
+
+  trigger_dag:
+    cmds:
+      - docker compose -f $ROOT_PROJECT/docker-compose.yaml run airflow-cli dags trigger clima_etl_dag
